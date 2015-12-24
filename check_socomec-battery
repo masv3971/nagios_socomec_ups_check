@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl
 #
-# $Id: check_socomec-battery 9634 2015-12-17 13:02:11Z masv3971 $ 
-# $HeadURL: svn+ssh://svn.it.su.se/svn/system/nagios/scripts/checks/check_socomec-battery $
+# $Id$ 
+# $HeadURL$
 #
 # Don't use embedded perl for this check. Must be in first 10 lines of file!
 #
@@ -15,6 +15,7 @@
 # Retriving battery time, status, volt and state        #
 #                                                       #
 #########################################################
+
 use strict;
 use lib "/local/nagios/lib";
 use SU_Nagios qw ( exit_clean get_snmp_community );
@@ -147,11 +148,7 @@ $status = 'CRITICAL' if ("$status" eq '2');
 exit_clean ($status, $returnstr . "\n");
 
 
-##############################################################################
-##############################################################################
-#
 # Change the status level
-#
 sub status {
     my $newstatus = $_[0];
 
@@ -162,11 +159,7 @@ sub status {
 }
 
 
-##############################################################################
-##############################################################################
-#
 # Grab a value from snmp
-#
 sub grab_snmp_value {
     my $this_oid = $_[0];
     my $this_value = "";
@@ -182,8 +175,6 @@ sub grab_snmp_value {
     return $this_value;
 }
 
-##############################################################################
-##############################################################################
 # Check status on battery
 # Grab battery time remaining
 # Check battery voltage
@@ -282,26 +273,22 @@ sub check_device {
 }
 
 
-##############################################################################
-##############################################################################
-#
 # Usage information
-#
 sub usage {
     print << "USAGE";
     $0
 
-    Check a Masterguard UPS\' battery via SNMP
+    Check a Socomec UPS\' battery via SNMP
 
 Usage: $0 -H <hostname> -v <version> [-C <community>] [-w <s>,<min v>,<max v>] [-c <s>,<min v>,<max v>]
 
 Options:
-        -H     Hostname or IP address of the Masterguard UPS
+        -H     Hostname or IP address of the Socomec UPS
         -v     SNMP version supported by the UPS (default is $version)
         -C     SNMP read community (default is public)
         -w     Warning level remaining battery minutes and voltage min and max
         -c     Critical level remaining battery minutes and voltage min and max
-               For example: 5 minutes left and min 400 max 450 voltage= "5,400,450"
+               For example: 5 minutes left and min 400 max 450 voltage= "5.400.450"
 
 USAGE
     exit_clean ('CRITICAL');
