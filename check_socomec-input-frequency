@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl
 #
-# $Id: check_socomec-input-frequency 9637 2015-12-17 14:32:27Z masv3971 $
-# $HeadURL: svn+ssh://svn.it.su.se/svn/system/nagios/scripts/checks/check_socomec-input-frequency $
+# $Idm$
+# $HeadURL$
 #
 # Don't use embedded perl for this check. Must be in first 10 lines of file!
 #
@@ -30,9 +30,7 @@ my $OID_BASE =".1.3.6.1.2.1.33.1.3.3.1.2.";
 my $version = "2c";
 my $timeout = 2;
 
-##############################################################################
 # The top secret community name (password)...
-#
 my $community = get_snmp_community ('snmp');
 
 # The information we returned
@@ -170,11 +168,7 @@ $status = 'CRITICAL' if ("$status" eq '2');
 exit_clean ($status, $returnstr . "\n");
 
 
-##############################################################################
-##############################################################################
-#
 # Change the status level
-#
 sub status {
     my $newstatus = $_[0];
 
@@ -185,11 +179,7 @@ sub status {
 }
 
 
-##############################################################################
-##############################################################################
-#
 # Grab a value from snmp
-#
 sub grab_snmp_value {
     my $this_oid = $_[0];
     my $this_value = "";
@@ -206,11 +196,7 @@ sub grab_snmp_value {
 }
 
 
-##############################################################################
-##############################################################################
-#
 # Grab lots of interesting info about the device
-#
 sub check_device {
 
     my $fas;
@@ -248,27 +234,23 @@ sub check_device {
 
 }
 
-##############################################################################
-##############################################################################
-#
 # Usage information
-#
 sub usage {
     print << "USAGE";
     $0
 
-    Check a Masterguard UPS\' outgoing frequency via SNMP
+    Check a Socomec UPS\' outgoing frequency via SNMP
 
 Usage: $0 -H <hostname> -v <version> -f <phases> [-C <community>] [-w <freq min>.<freq max>] [-c <freq min>.<freq max>]
 
 Options:
-        -H      Hostname or IP address of the Masterguard UPS
+        -H      Hostname or IP address of the Socomec UPS
         -v      SNMP version supported by the UPS (default is $version)
         -f      The number of power phases attached to the UPS. !!! IMPORTANT !!!
         -C      SNMP read community (default is public)
         -w      Warning level min och max for outgoing frequency
         -c      Critical level min och max for outgoing frequency
-                For example: lower freq 49,5 and max 50,5 ="495.505"
+                For example: lower freq 49.5 and max 50.5 ="495.505"
 USAGE
 exit_clean ('CRITICAL');
 }
