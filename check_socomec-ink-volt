@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl
 #
-# $Id: check_socomec-ink-volt 9637 2015-12-17 14:32:27Z masv3971 $
-# $HeadURL: svn+ssh://svn.it.su.se/svn/system/nagios/scripts/checks/check_socomec-ink-volt $
+# $Id$
+# $HeadURL$
 #
 # Don't use embedded perl for this check. Must be in first 10 lines of file!
 #
@@ -241,13 +241,13 @@ sub usage {
 Usage: $0 -H <hostname> -v <version> -f <phases> [-C <community>] [-w <volt min>,<volt max>] [-c <volt min>,<volt max>]
 
 Options:
-        -H     Hostname or IP address of the Masterguard UPS
+        -H     Hostname or IP address of the Socomec UPS
         -v     SNMP version supported by the UPS (default is $version)
         -f     The number of power phases attached to the UPS !!! IMPORTANT !!!
         -C     SNMP read community (default is public)
         -w     Warning level min och max for inkomming voltage
         -c     Critical level min och max for inkomming voltage
-               For example: lower volt 210 and max 250 ="210,250"
+               For example: lower volt 210 and max 250 ="210.250"
 USAGE
     exit_clean ('CRITICAL');
 }
