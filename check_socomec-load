@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl
 #
-# $Id: check_socomec-load 9638 2015-12-17 14:39:25Z masv3971 $
-# $HeadURL: svn+ssh://svn.it.su.se/svn/system/nagios/scripts/checks/check_socomec-load $
+# $Id$
+# $HeadURL$
 #
 # Don't use embedded perl for this check. Must be in first 10 lines of file!
 #
@@ -236,7 +236,7 @@ Usage: $0 -H <hostname> -v <version> -f <phases> [-C <community>] [-w <load min>
 
 Options:
         -v  SNMP version supported by the UPS (default is $version)
-        -H  Hostname or IP address of the Masterguard UPS
+        -H  Hostname or IP address of the Socomec UPS
         -C  SNMP read community (default is public)
         -w  Warning level min och max for system load
         -c  Critical level min och max for system load
