@@ -1,11 +1,6 @@
-#! /usr/local/bin/perl
+#! /usr/bin/env perl
 #
-# $Id$
-# $HeadURL$
 #
-# Don't use embedded perl for this check. Must be in first 10 lines of file!
-#
-# nagios: -epn
 #
 #
 #########################################################
@@ -13,19 +8,17 @@
 # Manufacturer: Socomec                                 #
 # Modell: SOCOMEC                                       #
 #                                                       #
-# Retriving battery voltage.                            #
+# Retriving incoming voltage.                           #
 #                                                       #
 #########################################################
-#
+
 use strict;
-use lib "/local/nagios/lib";
-use SU_Nagios qw ( exit_clean get_snmp_community );
 use Net::SNMP;
 use Getopt::Std;
 use vars qw ($opt_h $opt_H $opt_v $opt_f $opt_C $opt_w $opt_c);
 
-# OID base for outgoing voltage
-my $OID_BASE = ".1.3.6.1.2.1.33.1.4.4.1.2.";
+# OID base for incoming voltage
+my $OID_BASE = ".1.3.6.1.2.1.33.1.3.3.1.3.";
 
 # SNMP options
 my $version = "2c";
@@ -93,15 +86,15 @@ if (defined($opt_w)) {
         $warning_low_volt = $warning[0];
     }
     if (!($warning[1] eq "")) {
-        $warning_high_volt = $warning[1];
+    $warning_high_volt = $warning[1];
     }
 
 
     # If we also have the maximum volt value, make sure it is higher
     # than the minimum
     if (($warning_high_volt != -1) &&
-        ($warning_high_volt < $warning_low_volt)) {
-        exit_clean ('CRITICAL', "Warning volt maximum is lower than the minimum!\n");
+    ($warning_high_volt < $warning_low_volt)) {
+    exit_clean ('CRITICAL', "Warning volt maximum is lower than the minimum!\n");
     }
 
 }
@@ -114,14 +107,14 @@ if (defined($opt_c)) {
         $critical_low_volt = $critical[0];
     }
     if (!($critical[1] eq "")) {
-        $critical_high_volt = $critical[1];
+    $critical_high_volt = $critical[1];
     }
 
     # If we also have the maximum volt value, make sure it is higher
     # than the minimum
     if (($critical_high_volt != -1) &&
-        ($critical_high_volt < $critical_low_volt)) {
-        exit_clean ('CRITICAL', "Critical volt maximum is lower than the minimum!\n");
+    ($critical_high_volt < $critical_low_volt)) {
+    exit_clean ('CRITICAL', "Critical volt maximum is lower than the minimum!\n");
     }
 
 }
@@ -172,7 +165,7 @@ sub status {
 
     # If the new status is greater than the old status, change the old status
     if ($newstatus > $status) {
-        $status = $newstatus;
+    $status = $newstatus;
     }
 }
 
@@ -194,18 +187,18 @@ sub grab_snmp_value {
 }
 
 
-# Grab outgoing volt info from the device
+# Grab lots of interesting info about the device
 sub check_device {
-
-    my $fas;
+    
+    my $phase;
     my $OID;
     my $snmp_ret_value;
     
     $returnstr = '';
     
     foreach (1..$num_phases) {
-       $fas = $_; 
-       $OID = "$OID_BASE" . "$fas";
+       $phase = $_; 
+       $OID = "$OID_BASE" . "$phase";
        $snmp_ret_value = grab_snmp_value($OID);
         if ($snmp_ret_value) {
             # Have we broken a threshold?
@@ -214,22 +207,21 @@ sub check_device {
                (($critical_low_volt != -1) &&
                ($snmp_ret_value < $critical_low_volt))) {
                 status(2); # Critical
-                $returnstr .= ($returnstr?", ":''). "Critical outgoing volt:";
+                $returnstr .= ($returnstr?", ":''). "Critical ink volt:";
             } elsif ((($warning_high_volt != -1) &&
                     ($snmp_ret_value > $warning_high_volt)) ||
                     (($warning_low_volt != -1) &&
                     ($snmp_ret_value < $warning_low_volt))) {
                 status(1); # Warning
-                $returnstr .= ($returnstr?", ":''). "Warning outgoing volt:";
+                $returnstr .= ($returnstr?", ":''). "Warning ink volt:";
             }
-
-        $returnstr .= ($returnstr?", ":''). "Outgoing volt fas $fas: $snmp_ret_value";
+    
+            $returnstr .= ($returnstr?", ":''). "Ink volt phase $phase: $snmp_ret_value";
         } else {
             status(2); # CRITICAL
-            $returnstr .= ($returnstr?", ":''). "no data for fas $fas";
+            $returnstr .= ($returnstr?", ":''). "Warning no data for phase $phase";
         }
     }
-
 }
 
 # Usage information
@@ -237,7 +229,7 @@ sub usage {
     print << "USAGE";
     $0
 
-    Check a Socomec UPS\' outgoing voltage via SNMP
+    Check a Socomec UPS\' incomming voltage via SNMP
 
 Usage: $0 -H <hostname> -v <version> -f <phases> [-C <community>] [-w <volt min>,<volt max>] [-c <volt min>,<volt max>]
 
@@ -246,9 +238,9 @@ Options:
         -v     SNMP version supported by the UPS (default is $version)
         -f     The number of power phases attached to the UPS !!! IMPORTANT !!!
         -C     SNMP read community (default is public)
-        -w     Warning level min och max for outgoing voltage
-        -c     Critical level min och max for outgoing voltage
+        -w     Warning level min och max for inkomming voltage
+        -c     Critical level min och max for inkomming voltage
                For example: lower volt 210 and max 250 ="210.250"
 USAGE
-exit_clean ('CRITICAL');
+    exit_clean ('CRITICAL');
 }

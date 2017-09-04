@@ -1,11 +1,5 @@
 #! /usr/local/bin/perl
 #
-# $Id$
-# $HeadURL$
-#
-# Don't use embedded perl for this check. Must be in first 10 lines of file!
-#
-# nagios: -epn
 #
 #########################################################
 # Product: UPS                                          #
@@ -18,8 +12,6 @@
 #
 
 use strict;
-use lib "/local/nagios/lib";
-use SU_Nagios qw ( exit_clean get_snmp_community );
 use Net::SNMP;
 use Getopt::Std;
 use vars qw ($opt_h $opt_H $opt_C $opt_w $opt_c);
